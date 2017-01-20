@@ -25,27 +25,27 @@ function loadData() {
 
     // nyTimes
     // Built by LucyBot. www.lucybot.com
-    var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
-    url += '?' + $.param({
+    var nyTimesUrl = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+   nyTimesUrl += '?' + $.param({
       'api-key': "cf2fe9e6bb3d46b5a708a088d4619f80",
       'q': cityStr
     });
     $.ajax({
-      url: url,
+      url: nyTimesUrl,
       method: 'GET',
-    }).done(function(result) {
-      var articles = result.response.docs;
-      for(var i = 0; i < articles.length; i++){
-         var article = articles[i];
-         $nytElem.append('<li class = "article"><a href = "'+
-            article.web_url + '">' +
-            article.headline.main + '</a><p>' +
-            article.snippet + '</p>');
-      }
-    }).fail(function(err) {
-      throw err;
+    }).done(function(data) {
+        $nytHeaderElem.text('NY Times Articles about ' + cityStr);
+      articles = data.response.docs;
+        for(var i = 0; i < articles.length; i++){
+            var article = articles[i];
+            $nytElem.append('<li class = "article">'+
+                '<a href="' + article.web_url+'">' + article.headline.main + '</a>'+
+                '<p>'+ article.snippet + '</p>'+
+                '</li>');
+        };
+    }).error(function(e) {
+        $nytHeaderElem.text('NY Times Articles Error');
     });
-
     return false;
 };
 
