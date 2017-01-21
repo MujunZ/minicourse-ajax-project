@@ -53,15 +53,21 @@ function loadData() {
     $.ajax({
       url: wikiUrl,
        dataType: "jsonp",
-       success: function (response) {
-           var articleList = response[1];
+       // success: function (response) {
+       //     var articleList = response[1];
+       //     for(var i = 0; i < articleList.length; i++){
+       //        var articleName = articleList[i];
+       //        var url = 'http://en.wikipedia.org/wiki' + articleName;
+       //        $wikiElem.append('<li><a href="' + url + '">' + articleName + '</a></li>');
+       //     };
+       }).done(function (response) {
+            var articleList = response[1];
            for(var i = 0; i < articleList.length; i++){
               var articleName = articleList[i];
               var url = 'http://en.wikipedia.org/wiki' + articleName;
               $wikiElem.append('<li><a href="' + url + '">' + articleName + '</a></li>');
-           };
-       }
-    });
+            };
+        });
     return false;
 };
 
