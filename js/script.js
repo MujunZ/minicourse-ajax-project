@@ -48,18 +48,14 @@ function loadData() {
     });
 
     // Wikipedia
+    var wikiRequestTimeout = setTimeout(function () {
+        $wikiElem.text('Timeout To Get Wikipedia');
+    },8000);
     var wikiUrl = 'https://en.wikipedia.org//w/api.php?action=opensearch&format=json&search='+
     cityStr +'&callback=wikiCallback';
     $.ajax({
       url: wikiUrl,
        dataType: "jsonp",
-       // success: function (response) {
-       //     var articleList = response[1];
-       //     for(var i = 0; i < articleList.length; i++){
-       //        var articleName = articleList[i];
-       //        var url = 'http://en.wikipedia.org/wiki' + articleName;
-       //        $wikiElem.append('<li><a href="' + url + '">' + articleName + '</a></li>');
-       //     };
        }).done(function (response) {
             var articleList = response[1];
            for(var i = 0; i < articleList.length; i++){
@@ -67,6 +63,9 @@ function loadData() {
               var url = 'http://en.wikipedia.org/wiki' + articleName;
               $wikiElem.append('<li><a href="' + url + '">' + articleName + '</a></li>');
             };
+            clearTimeout(wikiRequestTimeout);
+        }).error(function(e) {
+            $wikiElem.text('Failed To Get Wikipedia');
         });
     return false;
 };
