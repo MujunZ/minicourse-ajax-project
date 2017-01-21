@@ -16,7 +16,7 @@ function loadData() {
     var cityStr = $('#city').val();
     var address = streetStr + ', ' + cityStr;
 
-    //greating
+    // greating
     $greeting.text('Hello, friend from ' + address + '!');
 
     // background GoogleMap Streetview 
@@ -45,6 +45,22 @@ function loadData() {
         };
     }).error(function(e) {
         $nytHeaderElem.text('NY Times Articles Error');
+    });
+
+    // Wikipedia
+    var wikiUrl = 'https://en.wikipedia.org//w/api.php?action=opensearch&format=json&search='+
+    cityStr +'&callback=wikiCallback';
+    $.ajax({
+      url: wikiUrl,
+       dataType: "jsonp",
+       success: function (response) {
+           var articleList = response[1];
+           for(var i = 0; i < articleList.length; i++){
+              var articleName = articleList[i];
+              var url = 'http://en.wikipedia.org/wiki' + articleName;
+              $wikiElem.append('<li><a href="' + url + '">' + articleName + '</a></li>');
+           };
+       }
     });
     return false;
 };
